@@ -7,10 +7,10 @@ FROM python:3.10-bullseye
 WORKDIR /root/src/app
 
 # apt 更换源
-# RUN sed -i "s/archive.ubuntu./mirrors.aliyun./g" /etc/apt/sources.list
-# RUN sed -i "s/deb.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list
-# RUN sed -i "s/security.debian.org/mirrors.aliyun.com\/debian-security/g" /etc/apt/sources.list
-# RUN sed -i "s/httpredir.debian.org/mirrors.aliyun.com\/debian-security/g" /etc/apt/sources.list
+RUN sed -i "s/archive.ubuntu./mirrors.aliyun./g" /etc/apt/sources.list
+RUN sed -i "s/deb.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list
+RUN sed -i "s/security.debian.org/mirrors.aliyun.com\/debian-security/g" /etc/apt/sources.list
+RUN sed -i "s/httpredir.debian.org/mirrors.aliyun.com\/debian-security/g" /etc/apt/sources.list
 
 # pip 更换源
 RUN pip config set global.index-url http://mirrors.aliyun.com/pypi/simple
