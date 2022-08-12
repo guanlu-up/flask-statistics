@@ -1,7 +1,5 @@
 from database.base import BaseDB
-from models.users import User, Article
-
-from models import session
+from models.users import User
 
 
 class UsersDB(BaseDB):
@@ -18,17 +16,3 @@ class UsersDB(BaseDB):
         """
         query = self._query.filter(self._model.username == username)
         return query.one() if _raise else query.first()
-
-
-class ArticleDB(BaseDB):
-    """数据库; article表"""
-
-    def __init__(self):
-        super(ArticleDB, self).__init__(Article)
-
-    def new_article(self, title: str, content: str, user: User):
-        """创建新文章"""
-        model = self._model(title, content)
-        model.author = user
-        session.add(model)
-        session.commit()
