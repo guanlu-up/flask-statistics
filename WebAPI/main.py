@@ -9,7 +9,7 @@ def create_app():
     _app = Flask(__name__)
     _app.config.from_object(EnvironConfig)
     db.init_app(_app)
-    db.app = _app
+    # db.app = _app
     init_views(_app)
 
     return _app
