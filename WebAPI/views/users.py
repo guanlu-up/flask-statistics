@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import request
 
 from models import users as users_model
-from database import UsersDB
+from database.users import UsersDB, UserExtensionDB
 
 users_view = Blueprint("users", __name__, url_prefix="/users")
 
@@ -20,7 +20,9 @@ def add_user():
 def user_update(user_id):
     api = UsersAPI()
     if request.method == "PUT":
-        return api.update_password(user_id)
+        if "password" in request.json.keys():
+            return api.update_password(user_id)
+        return api.update(user_id)
     if request.method == "DELETE":
         return api.delete_user(user_id)
 
@@ -46,6 +48,28 @@ class UsersAPI(object):
 
         return {"status": 200, "message": "success"}
 
+    def update(self, user_id: int):
+        user: users_model.User = self.db.query_by_id(user_id)
+        if user is None:
+            return {"message": "user_id invalid"}, 400
+        param_mapper: dict = request.get_json()
+        extension_mapper = {}
+        # 判断是否存在扩展属性
+        for ext in ("interest", "school"):
+            if ext in param_mapper.keys():
+                extension_mapper.update({ext: param_mapper.get(ext)})
+                param_mapper.pop(ext)
+        if extension_mapper:
+            extension_db = UserExtensionDB()
+            entity, ok = extension_db.update(user.id, extension_mapper)
+            if not ok:
+                return {"status": 400, "message": "update fail"}
+        if param_mapper:
+            entity, ok = self.db.update(user_id, param_mapper)
+            if not ok:
+                return {"status": 400, "message": "update fail"}
+        return {"status": 200, "message": "success"}
+
     def get_user(self):
         """获取用户信息"""
         _id = request.args.get("id")
@@ -60,6 +84,11 @@ class UsersAPI(object):
             "password": user.password,
             "is_admin": user.is_admin,
         }
+        if hasattr(user, "extension") and user.extension is not None:
+            userinfo.update({
+                "school": user.extension.school,
+                "interest": user.extension.interest,
+            })
         return {"status": 200, "message": userinfo}
 
     def create_user(self):
@@ -73,11 +102,15 @@ class UsersAPI(object):
         user = self.db.query_by_username(username)
         if user is not None:
             return {'message': 'user already exist!'}, 400
+        school = request.json.get("school")
+        interest = request.json.get("interest")
+        user_extension = users_model.UserExtension(school, interest)
 
         self.db.create({
             "username": username,
             "password": password,
             "is_admin": is_admin,
+            "extension": user_extension,
         })
         return {"status": 200, "message": "success"}
 
