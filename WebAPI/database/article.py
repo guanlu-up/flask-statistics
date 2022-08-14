@@ -1,7 +1,7 @@
-from database.base import BaseDB
-from models.article import Article
+from ..database.base import BaseDB
+from ..models.article import Article
 
-from models import session
+from ..models import session
 
 
 class ArticleDB(BaseDB):

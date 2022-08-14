@@ -1,8 +1,8 @@
 from flask import Blueprint
 from flask import request
 
-from models import users as users_model
-from database.users import UsersDB, UserExtensionDB
+from ..models import users as users_model
+from ..database.users import UsersDB, UserExtensionDB
 
 users_view = Blueprint("users", __name__, url_prefix="/users")
 

@@ -1,6 +1,6 @@
 import sqlalchemy as alchemy
 
-from models import db
+from ..models import db
 
 
 class User(db.Model):
@@ -12,11 +12,13 @@ class User(db.Model):
     username = alchemy.Column(alchemy.String(256), nullable=False, unique=True, doc="username")
     password = alchemy.Column(alchemy.String(256), nullable=False, doc="password")
     is_admin = alchemy.Column(alchemy.Boolean, nullable=False, default=False, doc="is administrator")
+    is_delete = alchemy.Column(alchemy.Boolean, nullable=False, default=False, doc="is deleted?")
 
-    def __init__(self, username: str, password: str, is_admin=False, extension=None):
+    def __init__(self, username: str, password: str, is_admin=False, is_delete=False, extension=None):
         self.username = username
         self.password = password
         self.is_admin = is_admin
+        self.is_delete = is_delete
         if extension is None:
             extension = UserExtension()
         self.extension = extension

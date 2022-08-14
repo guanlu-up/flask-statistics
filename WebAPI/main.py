@@ -1,16 +1,15 @@
 from flask import Flask
 
-from models import db
-from views import init_views
-from config import EnvironConfig
+from .views import init_views
+from .config import EnvironConfig
+from .extension import extension_register
 
 
 def create_app():
     _app = Flask(__name__)
     _app.config.from_object(EnvironConfig)
-    db.init_app(_app)
-    # db.app = _app
     init_views(_app)
+    extension_register(_app)
 
     return _app
 

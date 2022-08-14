@@ -1,8 +1,8 @@
 from flask import Blueprint
 from flask import request
 
-from database.users import UsersDB
-from database.article import ArticleDB
+from ..database.users import UsersDB
+from ..database.article import ArticleDB
 
 article_view = Blueprint("article", __name__, url_prefix="/article")
 

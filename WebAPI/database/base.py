@@ -2,7 +2,7 @@
 from sqlalchemy.orm.query import Query
 from sqlalchemy import Column
 
-from models import session
+from ..models import session
 
 
 class BaseDB(object):

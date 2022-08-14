@@ -1,8 +1,6 @@
-from sqlalchemy import Column
-
-from models import session
-from database.base import BaseDB
-from models.users import User, UserExtension
+from ..models import session
+from ..database.base import BaseDB
+from ..models.users import User, UserExtension
 
 
 class UsersDB(BaseDB):
