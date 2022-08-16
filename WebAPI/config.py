@@ -14,3 +14,4 @@ class EnvironConfig(object):
     JSON_AS_ASCII = False
     SQLALCHEMY_DATABASE_URI = "mysql://{}:{}@{}:{}/{}".format(*DATABASE.URI)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECRET_KEY = "10#*secret#*%$key!@01"
