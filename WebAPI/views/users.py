@@ -1,5 +1,6 @@
 from flask import Blueprint
 from flask import request
+from werkzeug.security import generate_password_hash
 
 from ..models import users as users_model
 from ..database.users import UsersDB, UserExtensionDB
@@ -37,12 +38,11 @@ class UsersAPI(object):
         password = request.json.get("password")
         if password is None:
             return {'message': 'Required param is missing'}, 400
-
         user: users_model.User = self.db.query_by_id(user_id)
         if user is None:
             return {"message": "user_id invalid"}, 400
-
-        entity, ok = self.db.update(user_id, {"password": password})
+        entity, ok = self.db.update(
+            user_id, {"password": generate_password_hash(password)})
         if not ok:
             return {"status": 400, "message": "update fail"}
 
@@ -108,7 +108,7 @@ class UsersAPI(object):
 
         self.db.create({
             "username": username,
-            "password": password,
+            "password": generate_password_hash(password),
             "is_admin": is_admin,
             "extension": user_extension,
         })

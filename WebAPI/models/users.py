@@ -1,4 +1,5 @@
 import sqlalchemy as alchemy
+from werkzeug.security import check_password_hash
 
 from ..models import db
 
@@ -27,7 +28,7 @@ class User(db.Model):
         return "<%s %r>" % (self.__class__, self.username)
 
     def verify_password(self, password):
-        return self.password == password
+        return check_password_hash(self.password, password)
 
 
 class UserExtension(db.Model):
