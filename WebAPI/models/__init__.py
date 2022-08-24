@@ -20,8 +20,7 @@ sqlalchemy.Column():
     :param: comment
 """
 
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm.scoping import scoped_session
+from ..extension import db
 
-db = SQLAlchemy()
 session: scoped_session = db.session

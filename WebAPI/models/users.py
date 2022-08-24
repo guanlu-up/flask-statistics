@@ -1,7 +1,7 @@
 import sqlalchemy as alchemy
 from werkzeug.security import check_password_hash
 
-from ..models import db
+from ..extension import db
 
 
 class User(db.Model):

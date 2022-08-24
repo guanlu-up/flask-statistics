@@ -2,8 +2,7 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_session import Session
-
-from .models import db
+from flask_sqlalchemy import SQLAlchemy
 
 # migrate: 数据库迁移
 migrate = Migrate()
@@ -11,6 +10,8 @@ migrate = Migrate()
 jwt = JWTManager()
 # 利用flask-session, 把session保存到redis中
 redis_session = Session()
+# ORM
+db = SQLAlchemy()
 
 
 def extension_register(app: Flask):

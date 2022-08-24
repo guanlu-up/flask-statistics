@@ -1,6 +1,6 @@
 import sqlalchemy as alchemy
 
-from ..models import db
+from ..extension import db
 
 
 class Article(db.Model):
